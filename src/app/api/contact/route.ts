@@ -21,7 +21,7 @@ const MAX_LENGTHS = {
   message: 3000,
   formSource: 32,
 }
-const ALLOWED_FORM_SOURCES = new Set(['contact', 'order', 'careers'])
+const ALLOWED_FORM_SOURCES = new Set(['contact', 'order', 'careers', 'rfq'])
 
 interface SanitizedContactData {
   name: string
@@ -56,6 +56,7 @@ function buildSubject(data: SanitizedContactData): string {
     contact: 'Contact Inquiry',
     order: 'Quote Request',
     careers: 'Job Application',
+    rfq: 'Request for Quotation',
   }
   const prefix = sourceLabel[data.formSource] || 'Website Inquiry'
   const inquiryLabel = data.inquiryType ? ` — ${data.inquiryType}` : ''
