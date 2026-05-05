@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { ShoppingCart, Search, Plus, Minus, Trash2, Send, CheckCircle, AlertCircle, Package, ArrowLeft, Loader2, X } from 'lucide-react'
+import { ShoppingCart, Search, Plus, Minus, Trash2, Send, CheckCircle, AlertCircle, Package, ArrowLeft, X } from 'lucide-react'
 import { useTranslation } from '@/i18n/useTranslation'
 import { useRfqCart } from '@/contexts/RfqCartContext'
 import { useProducts, type MappedProduct } from '@/lib/strapi/useProducts'
@@ -60,8 +60,10 @@ function mapLocalProducts(): MappedProduct[] {
 export default function OrderNow() {
   const { t } = useTranslation()
   const { items, itemCount, addItem, removeItem, updateQuantity, clearCart } = useRfqCart()
-  const { products: cmsProducts, loading } = useProducts()
-  const products = cmsProducts.length > 0 ? cmsProducts : (loading ? [] : mapLocalProducts())
+  const { products: cmsProducts } = useProducts()
+  // Always show local fallback while CMS is in flight so first paint has
+  // real product data instead of a "Loading..." spinner.
+  const products = cmsProducts.length > 0 ? cmsProducts : mapLocalProducts()
 
   const [search, setSearch] = useState('')
   const [activeCat, setActiveCat] = useState('all')
@@ -174,12 +176,7 @@ export default function OrderNow() {
             </div>
 
             {/* Product Grid */}
-            {loading && products.length === 0 ? (
-              <div className="flex items-center justify-center py-20">
-                <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
-                <span className="ml-3 text-slate-500">{t.common.loading}</span>
-              </div>
-            ) : filtered.length === 0 ? (
+            {filtered.length === 0 ? (
               <div className="text-center py-16 text-slate-500">
                 <Package className="w-12 h-12 mx-auto mb-3 opacity-40" />
                 <p>{t.order.noProducts}</p>
