@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { Search, Calendar, ArrowRight, Loader2 } from 'lucide-react'
+import { Search, Calendar, ArrowRight } from 'lucide-react'
 import { useTranslation } from '@/i18n/useTranslation'
 import StrapiHeroCarousel from '@/components/common/StrapiHeroCarousel'
 import { useNews, type MappedNewsArticle } from '@/lib/strapi/useNews'
@@ -35,7 +35,9 @@ function mapLocalNews(): MappedNewsArticle[] {
 export default function News() {
   const { t } = useTranslation()
   const { articles: cmsArticles, loading, error } = useNews()
-  const articles = cmsArticles.length > 0 ? cmsArticles : (loading ? [] : mapLocalNews())
+  // Always show local fallback while CMS is in flight — local data is sync
+  // and avoids a visible "Loading news..." in server-rendered HTML.
+  const articles = cmsArticles.length > 0 ? cmsArticles : mapLocalNews()
 
   const hero = { title: 'Latest News & Updates', subtitle: 'Stay informed about our latest developments, partnerships, and achievements.' }
 
@@ -96,14 +98,7 @@ export default function News() {
       {/* News Grid */}
       <section className="py-8 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading && articles.length === 0 && (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="w-8 h-8 text-[#1E6F5C] animate-spin" />
-              <span className="ml-3 text-slate-500">Loading news...</span>
-            </div>
-          )}
-
-          {!loading && filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-slate-500">{t.news.noNewsFound}</p>
             </div>
@@ -136,8 +131,8 @@ export default function News() {
             </div>
           )}
 
-          {error && !loading && (
-            <p className="text-center text-xs text-amber-500 mt-4">(using offline data)</p>
+          {error && !loading && process.env.NODE_ENV === 'development' && (
+            <p className="text-center text-xs text-amber-500 mt-4">(offline data)</p>
           )}
         </div>
       </section>

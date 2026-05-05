@@ -254,22 +254,27 @@ export default function Products() {
                     for "<span className="text-[#1E6F5C]">{search}</span>"
                   </span>
                 )}
-                {!useCMS && (
-                  <span className="ml-2 text-xs text-amber-600"><AutoText text="(Using local data)" as="span" /></span>
+                {!useCMS && process.env.NODE_ENV === 'development' && (
+                  <span className="ml-2 text-xs text-amber-600">(local data)</span>
                 )}
               </p>
             </div>
 
-            {/* Loading State */}
-            {isLoading && (
+            {/* Loading State — only when CMS is the active source AND we have
+                no products yet (e.g. a refetch after the first CMS response).
+                Local fallback always has data, so we never render a spinner
+                while showing offline content. */}
+            {isLoading && useCMS && paged.length === 0 && (
               <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
                 <div className="animate-spin w-8 h-8 border-2 border-[#1E6F5C] border-t-transparent rounded-full mx-auto mb-4" />
                 <p className="text-slate-600"><AutoText text="Loading products..." as="span" /></p>
               </div>
             )}
 
-            {/* Product Grid */}
-            {!isLoading && paged.length === 0 ? (
+            {/* Product Grid: render whenever we have data (local fallback or
+                CMS). Only fall through to the empty state when there is
+                genuinely nothing to show and we are not waiting on CMS. */}
+            {paged.length === 0 && !(isLoading && useCMS) ? (
               <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
                 <SearchX className="w-12 h-12 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">{t.common.noResults}</h3>
@@ -282,7 +287,7 @@ export default function Products() {
                 </button>
               </div>
             ) : (
-              !isLoading && (
+              paged.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {paged.map((product) => {
                     const hue = (parseInt(product.id.replace(/\D/g, ''), 10) * 37) % 360
@@ -335,7 +340,7 @@ export default function Products() {
             )}
 
             {/* Pagination */}
-            {!isLoading && totalPages > 1 && (
+            {totalPages > 1 && paged.length > 0 && (
               <div className="mt-8 flex items-center justify-center gap-2">
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}

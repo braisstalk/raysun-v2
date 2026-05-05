@@ -14,6 +14,23 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Eye, ArrowRight
 }
 
+// Resolve a dotted translation key (e.g. "stats.years", "about.ourMission")
+// against the nested translations object. Falls back to the supplied string
+// if any segment is missing — keeps the page readable rather than rendering
+// the raw key when a translation hasn't landed yet.
+function tr(t: unknown, path: string, fallback: string): string {
+  const parts = path.split('.')
+  let cur: unknown = t
+  for (const p of parts) {
+    if (cur && typeof cur === 'object' && p in (cur as Record<string, unknown>)) {
+      cur = (cur as Record<string, unknown>)[p]
+    } else {
+      return fallback
+    }
+  }
+  return typeof cur === 'string' ? cur : fallback
+}
+
 interface AboutContent extends PageContent {
   highlights?: Array<{ icon: string; value: string; labelKey: string }>
   mission?: { icon: string; titleKey: string; descKey: string }
@@ -98,7 +115,7 @@ export default function About() {
                 <div key={idx} className="text-center">
                   <Icon className="w-8 h-8 text-[#1E6F5C] mx-auto mb-2" />
                   <div className="text-3xl font-bold text-slate-900"><AutoText text={h.value} as="span" /></div>
-                  <div className="text-sm text-slate-600">{(t as unknown as Record<string, string>)[h.labelKey] || h.labelKey}</div>
+                  <div className="text-sm text-slate-600">{tr(t, h.labelKey, h.labelKey)}</div>
                 </div>
               )
             })}
@@ -112,16 +129,16 @@ export default function About() {
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <div className="bg-gradient-to-br from-[#1E6F5C] to-[#289c76] text-white rounded-2xl p-8">
               <MissionIcon className="w-10 h-10 mb-4 opacity-90" />
-              <h2 className="text-2xl font-bold mb-4">{(t as unknown as Record<string, string>)[mission.titleKey] || mission.titleKey}</h2>
+              <h2 className="text-2xl font-bold mb-4">{tr(t, mission.titleKey, mission.titleKey)}</h2>
               <p className="text-blue-100 text-lg">
-                {(t as unknown as Record<string, string>)[mission.descKey] || mission.descKey}
+                {tr(t, mission.descKey, mission.descKey)}
               </p>
             </div>
             <div className="bg-slate-900 text-white rounded-2xl p-8">
               <VisionIcon className="w-10 h-10 mb-4" />
-              <h2 className="text-2xl font-bold mb-4">{(t as unknown as Record<string, string>)[vision.titleKey] || vision.titleKey}</h2>
+              <h2 className="text-2xl font-bold mb-4">{tr(t, vision.titleKey, vision.titleKey)}</h2>
               <p className="text-slate-300 text-lg">
-                {(t as unknown as Record<string, string>)[vision.descKey] || vision.descKey}
+                {tr(t, vision.descKey, vision.descKey)}
               </p>
             </div>
           </div>
@@ -141,8 +158,8 @@ export default function About() {
               return (
                 <div key={idx} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
                   <Icon className="w-10 h-10 text-[#1E6F5C] mb-4" />
-                  <h3 className="font-semibold text-slate-900 mb-2">{(t as unknown as Record<string, string>)[v.titleKey] || v.titleKey}</h3>
-                  <p className="text-sm text-slate-600">{(t as unknown as Record<string, string>)[v.descKey] || v.descKey}</p>
+                  <h3 className="font-semibold text-slate-900 mb-2">{tr(t, v.titleKey, v.titleKey)}</h3>
+                  <p className="text-sm text-slate-600">{tr(t, v.descKey, v.descKey)}</p>
                 </div>
               )
             })}
@@ -249,7 +266,7 @@ export default function About() {
                     : "bg-white text-[#1E6F5C] px-6 py-3 rounded-lg font-medium hover:bg-blue-50 flex items-center gap-2"
                   }
                 >
-                  {(t as unknown as Record<string, string>)[link.labelKey] || link.labelKey}
+                  {tr(t, link.labelKey, link.labelKey)}
                   {!isOutline && <ArrowRight className="w-4 h-4" />}
                 </Link>
               )
