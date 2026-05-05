@@ -4,6 +4,7 @@ import { ArrowLeft, FileText, Download, Mail, Eye, Lock, Clock, CheckCircle } fr
 import { getResourceBySlug, getRelatedResources, getAllResources } from '@/lib/content'
 import type { ResourceStatus } from '@/lib/content/types/content-resources'
 import AutoText from '@/components/common/AutoText'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 interface Props {
   params: Promise<{ slug: string; locale: string }>
@@ -40,17 +41,16 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { slug, locale } = await params
   const resource = getResourceBySlug(slug)
+  const path = `/resources/${slug}`
 
-  if (!resource) {
-    return { title: 'Resource Not Found - Resources - Raysun Biopharma' }
-  }
-
-  return {
-    title: `${resource.title} - Resources - Raysun Biopharma`,
-    description: resource.description,
-  }
+  return buildPageMetadata({
+    locale,
+    path,
+    title: resource ? `${resource.title} - Resources` : 'Resource Not Found - Resources',
+    description: resource?.description,
+  })
 }
 
 export default async function ResourceDetail({ params }: Props) {

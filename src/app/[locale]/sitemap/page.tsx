@@ -1,5 +1,20 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Map, ChevronRight } from 'lucide-react'
+import { buildPageMetadata } from '@/lib/seo/metadata'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return buildPageMetadata({
+    locale,
+    path: '/sitemap',
+    title: 'Sitemap',
+  })
+}
 
 const siteMap = {
   main: [

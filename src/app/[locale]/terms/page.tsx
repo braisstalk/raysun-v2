@@ -1,5 +1,20 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import AutoText from '@/components/common/AutoText'
+import { buildPageMetadata } from '@/lib/seo/metadata'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return buildPageMetadata({
+    locale,
+    path: '/terms',
+    title: 'Terms of Service',
+  })
+}
 
 export default function Terms() {
   return (

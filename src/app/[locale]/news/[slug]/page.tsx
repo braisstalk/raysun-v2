@@ -3,6 +3,7 @@ import { Metadata } from 'next'
 import { ArrowLeft, Calendar, User, FileText } from 'lucide-react'
 import { getNewsArticleBySlug, getRelatedNews, getAllNewsArticles } from '@/lib/content'
 import AutoText from '@/components/common/AutoText'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 interface Props {
   params: Promise<{ slug: string; locale: string }>
@@ -16,17 +17,16 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { slug, locale } = await params
   const article = getNewsArticleBySlug(slug)
+  const path = `/news/${slug}`
 
-  if (!article) {
-    return { title: 'Article Not Found - News - Raysun Biopharma' }
-  }
-
-  return {
-    title: `${article.title} - News - Raysun Biopharma`,
-    description: article.excerpt,
-  }
+  return buildPageMetadata({
+    locale,
+    path,
+    title: article ? `${article.title} - News` : 'Article Not Found - News',
+    description: article?.excerpt,
+  })
 }
 
 export default async function NewsDetail({ params }: Props) {
