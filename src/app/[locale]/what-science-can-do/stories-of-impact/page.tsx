@@ -1,6 +1,21 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Heart, Users, Globe, Award, MapPin, Calendar } from 'lucide-react'
 import AutoText from '@/components/common/AutoText'
+import { buildPageMetadata } from '@/lib/seo/metadata'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return buildPageMetadata({
+    locale,
+    path: '/what-science-can-do/stories-of-impact',
+    title: 'Stories of Impact',
+  })
+}
 
 const stories = [
   {

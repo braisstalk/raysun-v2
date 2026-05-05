@@ -3,9 +3,10 @@ import { Metadata } from 'next'
 import { ArrowLeft, MapPin, Briefcase, Clock, ArrowRight, Send, CheckCircle } from 'lucide-react'
 import { getJobBySlug, getRelatedJobs, getAllJobPostings } from '@/lib/content'
 import AutoText from '@/components/common/AutoText'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; locale: string }>
 }
 
 export async function generateStaticParams() {
@@ -16,17 +17,16 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { slug, locale } = await params
   const job = getJobBySlug(slug)
-  
-  if (!job) {
-    return { title: 'Job Not Found - Careers - Raysun Biopharma' }
-  }
-  
-  return {
-    title: `${job.title} - ${job.department} - Careers - Raysun Biopharma`,
-    description: job.summary,
-  }
+  const path = `/careers/${slug}`
+
+  return buildPageMetadata({
+    locale,
+    path,
+    title: job ? `${job.title} - ${job.department} - Careers` : 'Job Not Found - Careers',
+    description: job?.summary,
+  })
 }
 
 export default async function JobDetail({ params }: Props) {

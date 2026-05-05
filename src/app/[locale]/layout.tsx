@@ -1,5 +1,6 @@
-import { i18n, isValidLocale, rtlLocales } from '@/i18n/config'
+import { isValidLocale, rtlLocales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
+import { i18n } from '@/i18n/config'
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
@@ -7,46 +8,46 @@ import FloatingActions from '@/components/common/FloatingActions'
 
 import { LocaleProvider } from '@/i18n/LocaleContext'
 import { RfqCartProvider } from '@/contexts/RfqCartContext'
+import { BASE_URL, SITE_NAME, buildPageMetadata } from '@/lib/seo/metadata'
 
 // Generate static params for all locales
 export function generateStaticParams() {
   return i18n.locales.map((locale) => ({ locale }))
 }
 
-// Generate metadata per locale
+// Locale-level metadata.
+//
+// canonical / hreflang / og:url here describe the *locale home page*
+// (`/{locale}`). Nested routes MUST override these via their own
+// `generateMetadata` (using buildPageMetadata) so that, for example,
+// /en/about gets canonical=`${BASE_URL}/en/about` instead of `/en`.
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
 
-  const isZh = locale === 'zh'
-  const brandName = isZh ? '雷神生物制药' : 'Raysun Biopharma'
-  const description = isZh
-    ? 'GMP认证药品生产企业，专业生产软胶囊、片剂、胶囊、乳膏及注射剂。服务东南亚及全球市场。'
-    : 'GMP-certified pharmaceutical manufacturer specializing in softgels, tablets, capsules, creams, and injections. Serving Southeast Asia and global markets with quality medicines.'
+  const description =
+    'GMP-certified pharmaceutical manufacturer specializing in softgels, tablets, capsules, creams, and injections. Serving Southeast Asia and global markets with quality medicines.'
 
-  const baseUrl = 'https://www.raysunpharma.com'
-
-  // Build hreflang alternates
-  const languages: Record<string, string> = {}
-  for (const loc of i18n.locales) {
-    languages[loc] = `${baseUrl}/${loc}`
-  }
-  languages['x-default'] = `${baseUrl}/en`
+  const pageMetadata = buildPageMetadata({
+    locale,
+    path: '',
+    title: `${SITE_NAME} - GMP Certified Pharmaceutical Manufacturer`,
+    description,
+  })
 
   return {
-    metadataBase: new URL(baseUrl),
+    metadataBase: new URL(BASE_URL),
     title: {
-      default: `${brandName} - GMP Certified Pharmaceutical Manufacturer`,
-      template: `%s | ${brandName}`,
+      default: `${SITE_NAME} - GMP Certified Pharmaceutical Manufacturer`,
+      template: `%s | ${SITE_NAME}`,
     },
     description,
     keywords: [
       'pharmaceutical manufacturer', 'GMP certified', 'generic medicines',
       'softgel', 'tablet', 'Southeast Asia', 'Laos', 'healthcare',
-      ...(isZh ? ['雷神生物制药', '药品生产', 'GMP认证', '仿制药'] : []),
     ],
-    authors: [{ name: brandName }],
-    creator: brandName,
-    publisher: brandName,
+    authors: [{ name: SITE_NAME }],
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
     robots: {
       index: true,
       follow: true,
@@ -58,25 +59,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         'max-snippet': -1,
       },
     },
-    openGraph: {
-      type: 'website' as const,
-      locale: locale === 'zh' ? 'zh_CN' : locale === 'th' ? 'th_TH' : 'en_US',
-      url: `${baseUrl}/${locale}`,
-      siteName: brandName,
-      title: `${brandName} - GMP Certified Pharmaceutical Manufacturer`,
-      description,
-      images: [{ url: '/logo.png', width: 1200, height: 630, alt: brandName }],
-    },
     twitter: {
       card: 'summary_large_image' as const,
-      title: brandName,
+      title: SITE_NAME,
       description,
       images: ['/logo.png'],
     },
-    alternates: {
-      canonical: `${baseUrl}/${locale}`,
-      languages,
-    },
+    ...pageMetadata,
   }
 }
 
@@ -98,15 +87,19 @@ export default async function LocaleLayout({
   const isRtl = rtlLocales.includes(validLocale)
 
   return (
-    <LocaleProvider initialLocale={validLocale}>
-      <RfqCartProvider>
-        <Navbar />
-        <main className="min-h-screen pt-16">
-          {children}
-        </main>
-        <Footer />
-        <FloatingActions />
-      </RfqCartProvider>
-    </LocaleProvider>
+    <html lang={validLocale} dir={isRtl ? 'rtl' : 'ltr'}>
+      <body className="antialiased">
+        <LocaleProvider initialLocale={validLocale}>
+          <RfqCartProvider>
+            <Navbar />
+            <main className="min-h-screen pt-16">
+              {children}
+            </main>
+            <Footer />
+            <FloatingActions />
+          </RfqCartProvider>
+        </LocaleProvider>
+      </body>
+    </html>
   )
 }

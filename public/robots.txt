@@ -7,10 +7,9 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 Disallow: /*.json$
-Disallow: /*.xml$
 
 # Sitemap
-Sitemap: https://raysun-biopharma.com/sitemap.xml
+Sitemap: https://www.raysunpharma.com/sitemap.xml
 
 # Crawl-delay (optional)
 Crawl-delay: 1

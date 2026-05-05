@@ -154,73 +154,10 @@ const en: ContentTranslations = {
 
 const lo: ContentTranslations = th
 const es: ContentTranslations = vi
-
-const fr: ContentTranslations = {
-  home: {
-    hero: {
-      title: 'Votre partenaire pharmaceutique de confiance',
-      subtitle: 'Fournir des médicaments de haute qualité et abordables aux communautés du monde entier depuis notre installation certifiée GMP au Laos.',
-      primaryCta: 'Explorer les produits',
-      secondaryCta: 'Contactez-nous',
-    },
-    about: { title: 'À propos de nous', description: 'Engagé à fournir des médicaments de haute qualité aux patients du monde entier' },
-    capabilities: { title: 'Nos capacités' },
-    products: { title: 'Nos produits', viewAll: 'Voir tout' },
-    global: { title: 'Présence mondiale' },
-    cta: { title: 'Prêt à commencer?', subtitle: 'Contactez-nous aujourd\'hui pour discuter des opportunités de partenariat' },
-    manufacturing: { description: 'Notre installation de fabrication moderne produit une large gamme de produits pharmaceutiques' },
-  },
-  products: {
-    categories: {
-      antibiotics: 'Antibiotiques',
-      analgesics: 'Analgésiques',
-      'anti-inflammatory': 'Anti-inflammatoire',
-      cardiovascular: 'Cardiovasculaire',
-      diabetes: 'Diabète',
-      gastrointestinal: 'Gastro-intestinal',
-      respiratory: 'Respiratoire',
-      vitamins: 'Vitamines et suppléments',
-    },
-    searchPlaceholder: 'Rechercher des produits...',
-  },
-  news: { readMore: 'Lire la suite', latestNews: 'Dernières actualités' },
-  resources: { download: 'Télécharger', requestAccess: 'Demander l\'accès', title: 'Ressources' },
-}
-
-const zh: ContentTranslations = {
-  home: {
-    hero: {
-      title: '您值得信赖的制药合作伙伴',
-      subtitle: '从老挝GMP认证工厂向全球社区提供高质量、价格合理的药品。',
-      primaryCta: '探索产品',
-      secondaryCta: '联系我们',
-    },
-    about: { title: '关于我们', description: '致力于向全球患者提供高质量药品' },
-    capabilities: { title: '我们的能力' },
-    products: { title: '我们的产品', viewAll: '查看全部' },
-    global: { title: '全球布局' },
-    cta: { title: '准备好开始了吗?', subtitle: '立即联系我们讨论合作机会' },
-    manufacturing: { description: '我们的现代化生产设施生产各种药品' },
-  },
-  products: {
-    categories: {
-      antibiotics: '抗生素',
-      analgesics: '镇痛药',
-      'anti-inflammatory': '抗炎药',
-      cardiovascular: '心血管',
-      diabetes: '糖尿病',
-      gastrointestinal: '胃肠',
-      respiratory: '呼吸系统',
-      vitamins: '维生素和补充剂',
-    },
-    searchPlaceholder: '搜索产品...',
-  },
-  news: { readMore: '阅读更多', latestNews: '最新新闻' },
-  resources: { download: '下载', requestAccess: '申请访问', title: '资源' },
-}
+const pt: ContentTranslations = en // Portuguese - placeholder, falls back to English content
 
 export const contentTranslations: Record<Locale, ContentTranslations> = {
-  en, th, vi, ar, lo, es, fr, zh,
+  en, th, vi, ar, lo, es, pt,
 }
 
 export function getContentTranslation(locale: Locale): ContentTranslations {

@@ -4,6 +4,7 @@ import { ArrowLeft, Shield, FileText, ArrowRight, Check } from 'lucide-react'
 import { getProductBySlug, getAllProducts } from '@/lib/content'
 import { productsPageConfig } from '@/config/products'
 import AutoText from '@/components/common/AutoText'
+import { buildPageMetadata } from '@/lib/seo/metadata'
 
 interface Props {
   params: Promise<{ slug: string; locale: string }>
@@ -17,17 +18,16 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { slug, locale } = await params
   const product = getProductBySlug(slug)
+  const path = `/products/${slug}`
 
-  if (!product) {
-    return { title: 'Product Not Found - Products - Raysun Biopharma' }
-  }
-
-  return {
-    title: `${product.name} - Products - Raysun Biopharma`,
-    description: product.description,
-  }
+  return buildPageMetadata({
+    locale,
+    path,
+    title: product ? `${product.name} - Products` : 'Product Not Found - Products',
+    description: product?.description,
+  })
 }
 
 export default async function ProductDetail({ params }: Props) {
