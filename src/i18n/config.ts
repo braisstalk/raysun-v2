@@ -1,7 +1,7 @@
 // i18n configuration
 export const i18n = {
   defaultLocale: 'en',
-  locales: ['en', 'lo', 'th', 'vi', 'ar', 'es', 'fr', 'zh'],
+  locales: ['en', 'lo', 'th', 'vi', 'ar', 'es', 'pt'],
 } as const
 
 export type Locale = (typeof i18n)['locales'][number]
@@ -14,8 +14,7 @@ export const languageNames: Record<Locale, string> = {
   vi: 'Tiếng Việt',
   ar: 'العربية',
   es: 'Español',
-  fr: 'Français',
-  zh: '中文',
+  pt: 'Português',
 }
 
 // English names for reference
@@ -26,14 +25,24 @@ export const languageNamesEnglish: Record<Locale, string> = {
   vi: 'Vietnamese',
   ar: 'Arabic',
   es: 'Spanish',
-  fr: 'French',
-  zh: 'Chinese',
+  pt: 'Portuguese',
 }
 
 // RTL locales
 export const rtlLocales: Locale[] = ['ar']
 
+// OpenGraph locale codes (BCP 47-ish region tags) for social cards
+export const openGraphLocales: Record<Locale, string> = {
+  en: 'en_US',
+  lo: 'lo_LA',
+  th: 'th_TH',
+  vi: 'vi_VN',
+  ar: 'ar_AE',
+  es: 'es_ES',
+  pt: 'pt_PT',
+}
+
 // Check if a string is a valid locale
 export function isValidLocale(value: string): value is Locale {
-  return i18n.locales.includes(value as Locale)
+  return (i18n.locales as readonly string[]).includes(value)
 }

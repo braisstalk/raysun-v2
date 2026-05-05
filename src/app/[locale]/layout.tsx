@@ -1,4 +1,4 @@
-import { i18n, isValidLocale, rtlLocales } from '@/i18n/config'
+import { i18n, isValidLocale, rtlLocales, openGraphLocales } from '@/i18n/config'
 import type { Locale } from '@/i18n/config'
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/layout/Navbar'
@@ -17,11 +17,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
 
-  const isZh = locale === 'zh'
-  const brandName = isZh ? '雷神生物制药' : 'Raysun Biopharma'
-  const description = isZh
-    ? 'GMP认证药品生产企业，专业生产软胶囊、片剂、胶囊、乳膏及注射剂。服务东南亚及全球市场。'
-    : 'GMP-certified pharmaceutical manufacturer specializing in softgels, tablets, capsules, creams, and injections. Serving Southeast Asia and global markets with quality medicines.'
+  const brandName = 'Raysun Biopharma'
+  const description =
+    'GMP-certified pharmaceutical manufacturer specializing in softgels, tablets, capsules, creams, and injections. Serving Southeast Asia and global markets with quality medicines.'
 
   const baseUrl = 'https://www.raysunpharma.com'
 
@@ -31,6 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages[loc] = `${baseUrl}/${loc}`
   }
   languages['x-default'] = `${baseUrl}/en`
+
+  const ogLocale = isValidLocale(locale) ? openGraphLocales[locale] : openGraphLocales.en
 
   return {
     metadataBase: new URL(baseUrl),
@@ -42,7 +42,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     keywords: [
       'pharmaceutical manufacturer', 'GMP certified', 'generic medicines',
       'softgel', 'tablet', 'Southeast Asia', 'Laos', 'healthcare',
-      ...(isZh ? ['雷神生物制药', '药品生产', 'GMP认证', '仿制药'] : []),
     ],
     authors: [{ name: brandName }],
     creator: brandName,
@@ -60,7 +59,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     openGraph: {
       type: 'website' as const,
-      locale: locale === 'zh' ? 'zh_CN' : locale === 'th' ? 'th_TH' : 'en_US',
+      locale: ogLocale,
       url: `${baseUrl}/${locale}`,
       siteName: brandName,
       title: `${brandName} - GMP Certified Pharmaceutical Manufacturer`,
@@ -98,15 +97,19 @@ export default async function LocaleLayout({
   const isRtl = rtlLocales.includes(validLocale)
 
   return (
-    <LocaleProvider initialLocale={validLocale}>
-      <RfqCartProvider>
-        <Navbar />
-        <main className="min-h-screen pt-16">
-          {children}
-        </main>
-        <Footer />
-        <FloatingActions />
-      </RfqCartProvider>
-    </LocaleProvider>
+    <html lang={validLocale} dir={isRtl ? 'rtl' : 'ltr'}>
+      <body className="antialiased">
+        <LocaleProvider initialLocale={validLocale}>
+          <RfqCartProvider>
+            <Navbar />
+            <main className="min-h-screen pt-16">
+              {children}
+            </main>
+            <Footer />
+            <FloatingActions />
+          </RfqCartProvider>
+        </LocaleProvider>
+      </body>
+    </html>
   )
 }

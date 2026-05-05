@@ -5,7 +5,7 @@ import { getJobBySlug, getRelatedJobs, getAllJobPostings } from '@/lib/content'
 import AutoText from '@/components/common/AutoText'
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; locale: string }>
 }
 
 export async function generateStaticParams() {

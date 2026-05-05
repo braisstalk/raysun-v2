@@ -1,16 +1,13 @@
-export const dynamic = 'force-static'
-
 import { NextRequest, NextResponse } from 'next/server'
 
 const langMap: Record<string, string> = {
   en: 'en',
-  zh: 'zh-CN',
   lo: 'lo',
   th: 'th',
   vi: 'vi',
   ar: 'ar',
   es: 'es',
-  fr: 'fr',
+  pt: 'pt',
 }
 
 async function doTranslate(text: string, targetLang: string): Promise<string> {
@@ -30,13 +27,13 @@ async function doTranslate(text: string, targetLang: string): Promise<string> {
   return translated
 }
 
-// GET handler - for testing: /api/translate?text=hello&lang=zh
+// GET handler - for testing: /api/translate?text=hello&lang=pt
 export async function GET(request: NextRequest) {
   const text = request.nextUrl.searchParams.get('text') || ''
-  const lang = request.nextUrl.searchParams.get('lang') || 'zh'
+  const lang = request.nextUrl.searchParams.get('lang') || 'pt'
 
   if (!text) {
-    return NextResponse.json({ status: 'ok', message: 'Translate API is running. Use ?text=hello&lang=zh to test.' })
+    return NextResponse.json({ status: 'ok', message: 'Translate API is running. Use ?text=hello&lang=pt to test.' })
   }
 
   try {
