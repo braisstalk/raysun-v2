@@ -68,12 +68,12 @@ export default function Navbar() {
           <Link href="/" className="flex items-center shrink-0">
             <img
               src="/images/raysun-logo.png"
-              alt={<AutoText text="Raysun Biopharma" as="span" />}
+              alt="Raysun Biopharma"
               className="hidden lg:block h-11 w-auto max-w-[240px] object-contain"
             />
             <img
               src="/images/raysun-logo.png"
-              alt={<AutoText text="Raysun Biopharma" as="span" />}
+              alt="Raysun Biopharma"
               className="block lg:hidden h-9 w-auto max-w-[160px] object-contain"
             />
           </Link>

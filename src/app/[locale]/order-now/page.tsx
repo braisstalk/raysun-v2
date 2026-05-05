@@ -133,7 +133,7 @@ export default function OrderNow() {
       {/* Hero */}
       <StrapiHeroCarousel
         page="order-now"
-        badge={<AutoText text="ORDER CENTER" as="span" />}
+        badge="ORDER CENTER"
         badgeColor="text-emerald-400"
         heading={t.order.orderNow}
         description={t.order.browseCatalog}

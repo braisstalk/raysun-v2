@@ -46,7 +46,7 @@ export default function Terms() {
 
             <h2 className="text-2xl font-bold text-slate-900 mb-4"><AutoText text="5. Disclaimer" as="span" /></h2>
             <p className="text-slate-600 mb-6">
-              <AutoText text="The materials on this website are provided "as is." Raysun Biopharma makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property." as="span" />
+              <AutoText text="The materials on this website are provided 'as is.' Raysun Biopharma makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property." as="span" />
             </p>
 
             <h2 className="text-2xl font-bold text-slate-900 mb-4"><AutoText text="6. Limitation of Liability" as="span" /></h2>

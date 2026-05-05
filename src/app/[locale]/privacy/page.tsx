@@ -23,7 +23,7 @@ export default function Privacy() {
 
             <h2 className="text-2xl font-bold text-slate-900 mb-4"><AutoText text="1. Introduction" as="span" /></h2>
             <p className="text-slate-600 mb-6">
-              <AutoText text="Raysun Biopharma Co., Ltd. ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website." as="span" />
+              <AutoText text="Raysun Biopharma Co., Ltd. ('we,' 'our,' or 'us') is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website." as="span" />
             </p>
 
             <h2 className="text-2xl font-bold text-slate-900 mb-4"><AutoText text="2. Information We Collect" as="span" /></h2>

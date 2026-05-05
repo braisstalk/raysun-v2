@@ -164,7 +164,7 @@ export default function Products() {
     <>
       <StrapiHeroCarousel
         page="products"
-        badge={<AutoText text="200+ Products Available" as="span" />}
+        badge="200+ Products Available"
         badgeColor="text-emerald-400"
         heading={hero.title}
         description={hero.subtitle}

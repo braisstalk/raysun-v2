@@ -56,16 +56,16 @@ export default function About() {
   ]
 
   const milestones = content?.milestones ?? [
-    { year: '2014', title: <AutoText text="Company Founded" as="span" />, desc: <AutoText text="Raysun Biopharma established in Vientiane, Laos" as="span" /> },
-    { year: '2016', title: <AutoText text="Factory Completed" as="span" />, desc: <AutoText text="12,000 sqm state-of-the-art manufacturing facility completed" as="span" /> },
-    { year: '2017', title: <AutoText text="GMP Certification" as="span" />, desc: <AutoText text="Achieved WHO GMP certification for all production lines" as="span" /> },
-    { year: '2019', title: <AutoText text="Product Expansion" as="span" />, desc: <AutoText text="Expanded softgel and tablet production capabilities" as="span" /> },
-    { year: '2021', title: <AutoText text="ISO Certification" as="span" />, desc: <AutoText text="Quality Management System certified to ISO 9001:2015" as="span" /> },
-    { year: '2023', title: <AutoText text="Regional Expansion" as="span" />, desc: <AutoText text="Expanded distribution to Thailand, Cambodia, and Myanmar" as="span" /> },
-    { year: '2025', title: <AutoText text="Global Presence" as="span" />, desc: <AutoText text="Serving patients across multiple countries worldwide" as="span" /> },
+    { year: '2014', title: 'Company Founded', desc: 'Raysun Biopharma established in Vientiane, Laos' },
+    { year: '2016', title: 'Factory Completed', desc: '12,000 sqm state-of-the-art manufacturing facility completed' },
+    { year: '2017', title: 'GMP Certification', desc: 'Achieved WHO GMP certification for all production lines' },
+    { year: '2019', title: 'Product Expansion', desc: 'Expanded softgel and tablet production capabilities' },
+    { year: '2021', title: 'ISO Certification', desc: 'Quality Management System certified to ISO 9001:2015' },
+    { year: '2023', title: 'Regional Expansion', desc: 'Expanded distribution to Thailand, Cambodia, and Myanmar' },
+    { year: '2025', title: 'Global Presence', desc: 'Serving patients across multiple countries worldwide' },
   ]
 
-  const regions = content?.regions ?? [<AutoText text="Laos" as="span" />, <AutoText text="Thailand" as="span" />, <AutoText text="Cambodia" as="span" />, <AutoText text="Vietnam" as="span" />, <AutoText text="Myanmar" as="span" />, <AutoText text="Middle East" as="span" />, <AutoText text="Africa" as="span" />]
+  const regions = content?.regions ?? ['Laos', 'Thailand', 'Cambodia', 'Vietnam', 'Myanmar', 'Middle East', 'Africa']
 
   const ctaLinks = content?.ctaLinks ?? [
     { href: '/manufacturing', labelKey: 'nav.manufacturing' },
@@ -82,7 +82,7 @@ export default function About() {
       {/* Hero Carousel */}
       <StrapiHeroCarousel
         page="about"
-        badge={<AutoText text="ABOUT US" as="span" />}
+        badge="ABOUT US"
         badgeColor="text-blue-300"
         heading={t.hero.aboutTitle}
         description={t.hero.aboutSubtitle}
