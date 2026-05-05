@@ -1,103 +1,69 @@
-'use client'
-
-import { useState } from 'react'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import { ArrowLeft, FileText, Video, Link as LinkIcon, Download, Mail, Eye, Lock, Clock, ArrowRight, CheckCircle, Loader2 } from 'lucide-react'
-import { getResourceBySlug, getRelatedResources } from '@/lib/content'
-import { useResourceBySlug, useRelatedResources, MappedResource } from '@/lib/strapi/useResources'
+import { Metadata } from 'next'
+import { ArrowLeft, FileText, Download, Mail, Eye, Lock, Clock, CheckCircle } from 'lucide-react'
+import { getResourceBySlug, getRelatedResources, getAllResources } from '@/lib/content'
 import type { ResourceStatus } from '@/lib/content/types/content-resources'
 import AutoText from '@/components/common/AutoText'
 
-const statusConfig: Record<ResourceStatus, { label: string; description: string; color: string; icon: React.ElementType }> = {
+interface Props {
+  params: Promise<{ slug: string; locale: string }>
+}
+
+const statusConfig: Record<ResourceStatus, { label: string; description: string; color: string }> = {
   public: {
     label: 'Public',
     description: 'Available for direct download',
     color: 'bg-green-100 text-green-700',
-    icon: CheckCircle
   },
   request: {
     label: 'Request Access',
     description: 'Submit a request to access this resource',
     color: 'bg-amber-100 text-amber-700',
-    icon: Mail
   },
   restricted: {
     label: 'Restricted',
     description: 'Authorized personnel only',
     color: 'bg-red-100 text-red-700',
-    icon: Lock
   },
   pending: {
     label: 'Pending',
-    description: 'Under review',
-    color: 'bg-slate-100 text-slate-700',
-    icon: Clock
+    description: 'Awaiting approval',
+    color: 'bg-gray-100 text-gray-700',
+  },
+}
+
+export async function generateStaticParams() {
+  const resources = getAllResources()
+  return resources.map((resource) => ({
+    slug: resource.slug,
+  }))
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const resource = getResourceBySlug(slug)
+
+  if (!resource) {
+    return { title: 'Resource Not Found - Resources - Raysun Biopharma' }
   }
-}
 
-const typeIcons: Record<string, React.ElementType> = {
-  document: FileText,
-  video: Video,
-  link: LinkIcon
-}
-
-// Map local resource to MappedResource format
-function mapLocalResource(local: any): MappedResource {
   return {
-    id: local.id,
-    documentId: local.id,
-    slug: local.slug,
-    title: local.title,
-    description: local.description,
-    category: local.category,
-    resourceType: local.type,
-    status: local.status,
-    fileSize: local.fileSize || '',
-    updatedDate: local.updatedDate || '',
-    sortOrder: 0,
+    title: `${resource.title} - Resources - Raysun Biopharma`,
+    description: resource.description,
   }
 }
 
-export default function ResourceDetail() {
-  const params = useParams()
-  const slug = params?.slug as string
-
-  const { resource: cmsResource, loading, error } = useResourceBySlug(slug)
-  const localResource = getResourceBySlug(slug)
-
-  // Use CMS data if available, fallback to local
-  const resource: MappedResource | null = cmsResource || (localResource ? mapLocalResource(localResource) : null)
-
-  // Get related resources from CMS if available, fallback to local
-  const relatedFromCms = useRelatedResources(resource, 3)
-  const localRelated = localResource ? getRelatedResources(localResource.id).map(mapLocalResource) : []
-  const relatedResources = relatedFromCms.length > 0 ? relatedFromCms : localRelated
-
-  const [requestStatus, setRequestStatus] = useState<'idle' | 'requested'>('idle')
-
-  const handleRequestAccess = () => {
-    setRequestStatus('requested')
-  }
-
-  // Show loading spinner only if no resource available AND still loading
-  if (loading && !resource) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 text-[#1E6F5C] animate-spin mx-auto mb-4" />
-          <p className="text-slate-600"><AutoText text="Loading resource..." as="span" /></p>
-        </div>
-      </div>
-    )
-  }
+export default async function ResourceDetail({ params }: Props) {
+  const { slug } = await params
+  const resource = getResourceBySlug(slug)
+  const relatedResources = resource ? getRelatedResources(resource.id) : []
 
   if (!resource) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center px-4">
           <h1 className="text-2xl font-bold text-slate-900 mb-4"><AutoText text="Resource Not Found" as="span" /></h1>
-          <p className="text-slate-600 mb-6"><AutoText text="The resource you're looking for doesn't exist." as="span" /></p>
+          <p className="text-slate-600 mb-6"><AutoText text="The resource you are looking for does not exist." as="span" /></p>
           <Link href="/resources" className="inline-flex items-center gap-2 text-[#1E6F5C] font-medium hover:underline">
             <ArrowLeft className="w-4 h-4" /> <AutoText text="Back to Resources" as="span" />
           </Link>
@@ -107,8 +73,6 @@ export default function ResourceDetail() {
   }
 
   const status = statusConfig[resource.status]
-  const StatusIcon = status.icon
-  const TypeIcon = typeIcons[resource.resourceType] || FileText
 
   return (
     <>
@@ -120,7 +84,7 @@ export default function ResourceDetail() {
             <span className="text-slate-400">/</span>
             <Link href="/resources" className="text-slate-500 hover:text-[#1E6F5C]"><AutoText text="Resources" as="span" /></Link>
             <span className="text-slate-400">/</span>
-            <span className="text-slate-900 truncate max-w-[200px]"><AutoText text={resource.title} as="span" /></span>
+            <span className="text-slate-900 truncate max-w-[200px]">{resource.title}</span>
           </nav>
         </div>
       </div>
@@ -128,14 +92,12 @@ export default function ResourceDetail() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-[#1E6F5C] text-white py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="bg-white/10 px-3 py-1 rounded-full text-sm">{resource.category}</span>
-            <span className={`px-3 py-1 rounded-full text-sm ${status.color}`}>
-              {status.label}
-            </span>
+          <div className="flex items-center gap-2 text-sm text-[#1E6F5C] mb-4">
+            <span className="bg-white/10 px-3 py-1 rounded-full">{resource.type}</span>
+            <span className={`px-3 py-1 rounded-full text-xs ${status.color}`}>{status.label}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">{resource.title}</h1>
-          <p className="text-lg text-slate-300 max-w-2xl">{resource.description}</p>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{resource.title}</h1>
+          <p className="text-lg text-slate-300">{resource.description}</p>
         </div>
       </section>
 
@@ -145,102 +107,84 @@ export default function ResourceDetail() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="md:col-span-2">
-              {/* Document Preview Placeholder */}
-              <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl h-64 md:h-80 flex items-center justify-center mb-8">
-                <div className="text-center text-slate-400">
-                  <TypeIcon className="w-16 h-16 mx-auto mb-2" />
-                  <p><AutoText text="Document Preview" as="span" /></p>
-                </div>
+              <div className="prose prose-lg max-w-none">
+                <p className="text-slate-700 mb-6">{resource.description}</p>
               </div>
 
-              {/* Description */}
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-slate-900 mb-4"><AutoText text="Description" as="span" /></h2>
-                <p className="text-slate-700"><AutoText text={resource.description} as="span" /></p>
-              </div>
-
-              {/* Back Link */}
-              <div className="pt-8 border-t">
-                <Link href="/resources" className="inline-flex items-center gap-2 text-[#1E6F5C] font-medium hover:gap-3 transition-all">
-                  <ArrowLeft className="w-4 h-4" /> <AutoText text="Back to Resources" as="span" />
+              {/* Actions */}
+              <div className="flex flex-wrap gap-4 mt-8">
+                {resource.status === 'public' && resource.downloadUrl && (
+                  <a
+                    href={resource.downloadUrl}
+                    className="inline-flex items-center gap-2 bg-[#1E6F5C] hover:bg-[#289c76] text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                  >
+                    <Download className="w-4 h-4" /> <AutoText text="Download" as="span" />
+                  </a>
+                )}
+                {resource.status === 'request' && (
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                  >
+                    <Mail className="w-4 h-4" /> <AutoText text="Request Access" as="span" />
+                  </Link>
+                )}
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 border-2 border-[#1E6F5C] text-[#1E6F5C] hover:bg-[#1E6F5C] hover:text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                >
+                  <AutoText text="Contact Us" as="span" />
                 </Link>
               </div>
             </div>
 
             {/* Sidebar */}
-            <div>
-              {/* Details Card */}
-              <div className="bg-slate-50 rounded-xl p-6 mb-6">
-                <h3 className="font-semibold text-slate-900 mb-4"><AutoText text="Details" as="span" /></h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-500"><AutoText text="Type" as="span" /></span>
-                    <span className="text-sm font-medium text-slate-900 capitalize">{resource.resourceType}</span>
-                  </div>
-                  {resource.fileSize && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-500"><AutoText text="File Size" as="span" /></span>
-                      <span className="text-sm font-medium text-slate-900">{resource.fileSize}</span>
-                    </div>
-                  )}
-                  {resource.updatedDate && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-500"><AutoText text="Updated" as="span" /></span>
-                      <span className="text-sm font-medium text-slate-900">{resource.updatedDate}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-500"><AutoText text="Status" as="span" /></span>
-                    <span className={`text-sm font-medium ${status.color.split(' ')[1]}`}>{status.label}</span>
-                  </div>
+            <div className="space-y-6">
+              {/* Status */}
+              <div className="bg-slate-50 rounded-xl p-6">
+                <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4"><AutoText text="Status" as="span" /></h3>
+                <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg ${status.color}`}>
+                  {resource.status === 'public' && <Eye className="w-4 h-4" />}
+                  {resource.status === 'request' && <Mail className="w-4 h-4" />}
+                  {resource.status === 'restricted' && <Lock className="w-4 h-4" />}
+                  <span className="text-sm font-medium">{status.label}</span>
                 </div>
+                <p className="text-sm text-slate-500 mt-2">{status.description}</p>
               </div>
 
-              {/* Actions Card */}
+              {/* Details */}
               <div className="bg-slate-50 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4"><AutoText text="Actions" as="span" /></h3>
-
-                {resource.status === 'public' && (
-                  <button className="w-full bg-[#1E6F5C] text-white py-3 rounded-lg font-medium hover:opacity-90 flex items-center justify-center gap-2 mb-3">
-                    <Download className="w-4 h-4" /> <AutoText text="Download PDF" as="span" />
-                  </button>
-                )}
-
-                {resource.status === 'request' && (
-                  <>
-                    {requestStatus === 'requested' ? (
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-                        <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                        <p className="text-sm font-medium text-green-800"><AutoText text="Request Submitted" as="span" /></p>
-                        <p className="text-xs text-green-600"><AutoText text="We'll review and respond within 24-48 hours." as="span" /></p>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={handleRequestAccess}
-                        className="w-full bg-[#1E6F5C] text-white py-3 rounded-lg font-medium hover:opacity-90 flex items-center justify-center gap-2 mb-3"
-                      >
-                        <Mail className="w-4 h-4" /> <AutoText text="Request Access" as="span" />
-                      </button>
-                    )}
-                  </>
-                )}
-
-                {resource.status === 'restricted' && (
-                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-center">
-                    <Lock className="w-8 h-8 text-amber-600 mx-auto mb-2" />
-                    <p className="text-sm font-medium text-amber-800"><AutoText text="Restricted Access" as="span" /></p>
-                    <p className="text-xs text-amber-600 mb-3"><AutoText text="Contact our team for authorization." as="span" /></p>
-                    <Link href="/contact" className="text-sm text-[#1E6F5C] hover:underline">
-                      <AutoText text="Contact Sales" as="span" />
-                    </Link>
-                  </div>
-                )}
-
-                <button className="w-full border border-slate-200 text-slate-700 py-3 rounded-lg font-medium hover:bg-slate-100 flex items-center justify-center gap-2">
-                  <Eye className="w-4 h-4" /> <AutoText text="Preview" as="span" />
-                </button>
+                <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4"><AutoText text="Details" as="span" /></h3>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex justify-between">
+                    <span className="text-slate-500"><AutoText text="Type" as="span" /></span>
+                    <span className="text-slate-900">{resource.type}</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span className="text-slate-500"><AutoText text="Category" as="span" /></span>
+                    <span className="text-slate-900">{resource.category}</span>
+                  </li>
+                  {resource.fileSize && (
+                    <li className="flex justify-between">
+                      <span className="text-slate-500"><AutoText text="Size" as="span" /></span>
+                      <span className="text-slate-900">{resource.fileSize}</span>
+                    </li>
+                  )}
+                  {resource.fileSize && (
+                    <li className="flex justify-between">
+                      <span className="text-slate-500"><AutoText text="File Size" as="span" /></span>
+                      <span className="text-slate-900">{resource.fileSize}</span>
+                    </li>
+                  )}
+                </ul>
               </div>
             </div>
+          </div>
+
+          <div className="mt-12 pt-8 border-t">
+            <Link href="/resources" className="inline-flex items-center gap-2 text-[#1E6F5C] font-medium hover:gap-3 transition-all">
+              <ArrowLeft className="w-4 h-4" /> <AutoText text="Back to Resources" as="span" />
+            </Link>
           </div>
         </div>
       </section>
@@ -251,29 +195,24 @@ export default function ResourceDetail() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-slate-900 mb-8"><AutoText text="Related Resources" as="span" /></h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {relatedResources.map((related) => {
-                const RelatedIcon = typeIcons[related.resourceType] || FileText
-                const relatedStatus = statusConfig[related.status]
-                return (
-                  <Link
-                    key={related.id}
-                    href={`/resources/${related.slug}`}
-                    className="group bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <RelatedIcon className="w-8 h-8 text-[#1E6F5C]" />
-                      <span className={`text-xs px-2 py-1 rounded ${relatedStatus.color.split(' ')[0]}`}>
-                        {relatedStatus.label}
-                      </span>
-                    </div>
-                    <h3 className="font-semibold text-slate-900 group-hover:text-[#1E6F5C] mb-2">{related.title}</h3>
-                    <p className="text-xs text-slate-500 line-clamp-2 mb-3">{related.description}</p>
-                    <div className="flex items-center text-xs text-[#1E6F5C] font-medium">
-                      <AutoText text="View" as="span" /> <ArrowRight className="w-3 h-3 ml-1" />
-                    </div>
-                  </Link>
-                )
-              })}
+              {relatedResources.map((related) => (
+                <Link
+                  key={related.id}
+                  href={`/resources/${related.slug}`}
+                  className="group bg-white rounded-xl p-6 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <FileText className="w-8 h-8 text-[#1E6F5C]" />
+                    <span className={`text-xs px-2 py-1 rounded-full ${statusConfig[related.status].color}`}>
+                      {statusConfig[related.status].label}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold text-slate-900 group-hover:text-[#1E6F5C] mb-2">
+                    {related.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 line-clamp-2">{related.description}</p>
+                </Link>
+              ))}
             </div>
           </div>
         </section>

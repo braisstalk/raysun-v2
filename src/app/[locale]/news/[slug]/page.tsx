@@ -1,62 +1,38 @@
-'use client'
-
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import { ArrowLeft, Calendar, User, ArrowRight, FileText, Loader2 } from 'lucide-react'
-import { useNewsBySlug, useRelatedNews, type MappedNewsArticle } from '@/lib/strapi/useNews'
-import { getNewsArticleBySlug, getRelatedNews as getLocalRelatedNews } from '@/lib/content'
+import { Metadata } from 'next'
+import { ArrowLeft, Calendar, User, FileText } from 'lucide-react'
+import { getNewsArticleBySlug, getRelatedNews, getAllNewsArticles } from '@/lib/content'
 import AutoText from '@/components/common/AutoText'
 
-function getLocalArticle(slug: string): MappedNewsArticle | null {
-  const a = getNewsArticleBySlug(slug)
-  if (!a) return null
-  return {
-    id: a.id,
-    documentId: a.id,
-    slug: a.slug,
-    title: a.title,
-    excerpt: a.excerpt,
-    content: a.content,
-    date: a.date,
-    category: a.category,
-    image: a.image,
-    author: a.author,
-  }
+interface Props {
+  params: Promise<{ slug: string; locale: string }>
 }
 
-function getLocalRelated(article: MappedNewsArticle): MappedNewsArticle[] {
-  const related = getLocalRelatedNews(article.id)
-  return related.map(a => ({
-    id: a.id,
-    documentId: a.id,
-    slug: a.slug,
-    title: a.title,
-    excerpt: a.excerpt,
-    content: a.content,
-    date: a.date,
-    category: a.category,
-    image: a.image,
-    author: a.author,
+export async function generateStaticParams() {
+  const articles = getAllNewsArticles()
+  return articles.map((article) => ({
+    slug: article.slug,
   }))
 }
 
-export default function NewsDetail() {
-  const params = useParams()
-  const slug = params?.slug as string
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const article = getNewsArticleBySlug(slug)
 
-  const { article: cmsArticle, loading, error } = useNewsBySlug(slug)
-  const article = cmsArticle || (loading ? null : getLocalArticle(slug))
-  const cmsRelated = useRelatedNews(cmsArticle, 3)
-  const relatedArticles = cmsArticle ? cmsRelated : (article ? getLocalRelated(article) : [])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-[#1E6F5C] animate-spin" />
-        <span className="ml-3 text-slate-500"><AutoText text="Loading article..." as="span" /></span>
-      </div>
-    )
+  if (!article) {
+    return { title: 'Article Not Found - News - Raysun Biopharma' }
   }
+
+  return {
+    title: `${article.title} - News - Raysun Biopharma`,
+    description: article.excerpt,
+  }
+}
+
+export default async function NewsDetail({ params }: Props) {
+  const { slug } = await params
+  const article = getNewsArticleBySlug(slug)
+  const relatedArticles = article ? getRelatedNews(article.id) : []
 
   if (!article) {
     return (
@@ -82,7 +58,7 @@ export default function NewsDetail() {
             <span className="text-slate-400">/</span>
             <Link href="/news" className="text-slate-500 hover:text-[#1E6F5C]"><AutoText text="News" as="span" /></Link>
             <span className="text-slate-400">/</span>
-            <span className="text-slate-900 truncate max-w-[200px]"><AutoText text={article.title} as="span" /></span>
+            <span className="text-slate-900 truncate max-w-[200px]">{article.title}</span>
           </nav>
         </div>
       </div>
