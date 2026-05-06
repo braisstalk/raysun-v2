@@ -7,6 +7,7 @@ import StrapiHeroCarousel from '@/components/common/StrapiHeroCarousel'
 import { usePageContent } from '@/lib/strapi'
 import type { PageContent } from '@/lib/strapi'
 import AutoText from '@/components/common/AutoText'
+import BrandPlaceholder from '@/components/common/BrandPlaceholder'
 
 // Icon mapping
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -235,12 +236,14 @@ export default function About() {
                 ))}
               </div>
             </div>
-            <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl h-80 flex items-center justify-center">
-              <div className="text-center text-slate-400">
-                <Globe className="w-16 h-16 mx-auto mb-3" />
-                <p className="text-lg font-medium"><AutoText text="Global Distribution Network" as="span" /></p>
-              </div>
-            </div>
+            <BrandPlaceholder
+              icon={Globe}
+              label="Global Distribution Network"
+              variant="hero"
+              tone="teal"
+              rounded="2xl"
+              className="h-80"
+            />
           </div>
         </div>
       </section>

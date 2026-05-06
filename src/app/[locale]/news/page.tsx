@@ -2,12 +2,13 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { Search, Calendar, ArrowRight } from 'lucide-react'
+import { Search, Calendar, ArrowRight, Newspaper } from 'lucide-react'
 import { useTranslation } from '@/i18n/useTranslation'
 import StrapiHeroCarousel from '@/components/common/StrapiHeroCarousel'
 import { useNews, type MappedNewsArticle } from '@/lib/strapi/useNews'
 import { getNewsContent } from '@/lib/content'
 import AutoText from '@/components/common/AutoText'
+import BrandPlaceholder from '@/components/common/BrandPlaceholder'
 
 const CATEGORIES = [
   { id: 'All', label: 'All' },
@@ -111,7 +112,13 @@ export default function News() {
                       <img src={item.image} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
                     </div>
                   ) : (
-                    <div className="h-40 bg-gradient-to-br from-slate-200 to-slate-300" />
+                    <BrandPlaceholder
+                      icon={Newspaper}
+                      variant="card"
+                      tone="mixed"
+                      rounded="none"
+                      className="h-40"
+                    />
                   )}
                   <div className="p-6">
                     <div className="flex items-center gap-2 text-xs text-blue-600 mb-2">

@@ -10,6 +10,7 @@ import StrapiHeroCarousel from '@/components/common/StrapiHeroCarousel'
 import { useHomeData } from '@/lib/strapi/useHomeData'
 import HomeVideoFeature from '@/components/home/HomeVideoFeature'
 import AutoText from '@/components/common/AutoText'
+import BrandPlaceholder from '@/components/common/BrandPlaceholder'
 
 export default function Home() {
   const [content, setContent] = useState<any>(null)
@@ -153,14 +154,14 @@ export default function Home() {
                 {t.common.learnMore} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl h-64 md:h-80 flex items-center justify-center overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)' }}>
-                <div className="text-center">
-                  <Factory className="w-12 h-12 md:w-16 md:h-16 text-slate-300 mx-auto mb-3" />
-                  <p className="text-xs md:text-sm text-slate-400 font-medium">{t.content?.manufacturingFacility || 'Manufacturing Facility'}</p>
-                </div>
-              </div>
-            </div>
+            <BrandPlaceholder
+              icon={Factory}
+              label={t.content?.manufacturingFacility || 'Manufacturing Facility'}
+              variant="hero"
+              tone="mixed"
+              rounded="2xl"
+              className="h-64 md:h-80"
+            />
           </div>
         </div>
       </section>
@@ -312,7 +313,13 @@ export default function Home() {
             {newsData.items?.map((item: any, idx: number) => (
               <Link key={idx} href={item.href || '#'} className="group">
                 <div className="bg-slate-50 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
-                  <div className="h-40 bg-gradient-to-br from-slate-200 to-slate-300" />
+                  <BrandPlaceholder
+                    icon={FileText}
+                    variant="card"
+                    tone="slate"
+                    rounded="none"
+                    className="h-40"
+                  />
                   <div className="p-6">
                     <div className="flex items-center gap-2 text-xs text-[#1E6F5C] mb-2">
                       <span>{item.date}</span>

@@ -6,6 +6,7 @@ import { useTranslation } from '@/i18n/useTranslation'
 import StrapiHeroCarousel from '@/components/common/StrapiHeroCarousel'
 import { usePageContent } from '@/lib/strapi/usePageContent'
 import AutoText from '@/components/common/AutoText'
+import BrandPlaceholder from '@/components/common/BrandPlaceholder'
 
 const iconMap: Record<string, React.ElementType> = {
   Factory, Shield, Award, Gauge, FlaskConical, Package, Droplets, Syringe, Pill, Thermometer, Wind, Eye,
@@ -98,12 +99,14 @@ export default function Manufacturing() {
                 ))}
               </div>
             </div>
-            <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl h-80 flex items-center justify-center">
-              <div className="text-center">
-                <Factory className="w-16 h-16 text-slate-300 mx-auto mb-3" />
-                <p className="text-sm text-slate-400 font-medium"><AutoText>Manufacturing Facility</AutoText></p>
-              </div>
-            </div>
+            <BrandPlaceholder
+              icon={Factory}
+              label="Manufacturing Facility"
+              variant="hero"
+              tone="mixed"
+              rounded="2xl"
+              className="h-80"
+            />
           </div>
         </div>
       </section>
