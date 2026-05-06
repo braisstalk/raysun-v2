@@ -1,9 +1,8 @@
-import { NavigationConfig, WhatScienceMenuItem } from '@/types/navigation'
+import { NavigationConfig } from '@/types/navigation'
 
 // Translation keys mapping
 const navTranslations: Record<string, Record<string, string>> = {
   en: {
-    'What science can do': 'What science can do',
     'Home': 'Home',
     'About Us': 'About Us',
     'Manufacturing': 'Manufacturing',
@@ -15,15 +14,12 @@ const navTranslations: Record<string, Record<string, string>> = {
     'Contact': 'Contact',
     'Resources': 'Resources',
     'Overview': 'Overview',
-    'Stories of impact': 'Stories of impact',
-    'Publications': 'Publications',
     'Softgels': 'Softgels',
     'Tablets': 'Tablets',
     'Creams & Ointments': 'Creams & Ointments',
     'Injections': 'Injections',
   },
   lo: {
-    'What science can do': 'ສິ່ງທີ່ວິທະຍາສາດເຮັດໄດ້',
     'Home': 'ໜ້າຫຼັກ',
     'About Us': 'ກ່ຽວກັບພວກເຮົາ',
     'Manufacturing': 'ການຜະລິດ',
@@ -35,15 +31,12 @@ const navTranslations: Record<string, Record<string, string>> = {
     'Contact': 'ຕິດຕໍ່',
     'Resources': 'ຊັບພະຍາກອນ',
     'Overview': 'ພາບລວມ',
-    'Stories of impact': 'ເລື່ອງລາວຜົນກະທົບ',
-    'Publications': 'ສິ່ງພິມ',
     'Softgels': 'ແຄບຊູນອ່ອນ',
     'Tablets': 'ຢາເມັດ',
     'Creams & Ointments': 'ຄີມ ແລະ ຢາທາ',
     'Injections': 'ຢາສັກ',
   },
   th: {
-    'What science can do': 'สิ่งที่วิทยาศาสตร์ทำได้',
     'Home': 'หน้าแรก',
     'About Us': 'เกี่ยวกับเรา',
     'Manufacturing': 'การผลิต',
@@ -55,15 +48,12 @@ const navTranslations: Record<string, Record<string, string>> = {
     'Contact': 'ติดต่อเรา',
     'Resources': 'แหล่งข้อมูล',
     'Overview': 'ภาพรวม',
-    'Stories of impact': 'เรื่องราวแห่งความเปลี่ยนแปลง',
-    'Publications': 'สิ่งพิมพ์',
     'Softgels': 'ซอฟท์เจล',
     'Tablets': 'ยาเม็ด',
     'Creams & Ointments': 'ครีมและขี้ผึ้ง',
     'Injections': 'ยาฉีด',
   },
   vi: {
-    'What science can do': 'Khoa học có thể làm gì',
     'Home': 'Trang chủ',
     'About Us': 'Giới thiệu',
     'Manufacturing': 'Sản xuất',
@@ -75,15 +65,12 @@ const navTranslations: Record<string, Record<string, string>> = {
     'Contact': 'Liên hệ',
     'Resources': 'Tài nguyên',
     'Overview': 'Tổng quan',
-    'Stories of impact': 'Câu chuyện tác động',
-    'Publications': 'Ấn phẩm',
     'Softgels': 'Viên nang mềm',
     'Tablets': 'Viên nén',
     'Creams & Ointments': 'Kem & Thuốc mỡ',
     'Injections': 'Thuốc tiêm',
   },
   ar: {
-    'What science can do': 'ما يمكن أن يفعله العلم',
     'Home': 'الرئيسية',
     'About Us': 'من نحن',
     'Manufacturing': 'التصنيع',
@@ -95,15 +82,12 @@ const navTranslations: Record<string, Record<string, string>> = {
     'Contact': 'اتصل بنا',
     'Resources': 'الموارد',
     'Overview': 'نظرة عامة',
-    'Stories of impact': 'قصص التأثير',
-    'Publications': 'المنشورات',
     'Softgels': 'كبسولات هلامية',
     'Tablets': 'أقراص',
     'Creams & Ointments': 'كريمات ومراهم',
     'Injections': 'حقن',
   },
   es: {
-    'What science can do': 'Lo que la ciencia puede hacer',
     'Home': 'Inicio',
     'About Us': 'Sobre nosotros',
     'Manufacturing': 'Fabricación',
@@ -115,15 +99,12 @@ const navTranslations: Record<string, Record<string, string>> = {
     'Contact': 'Contacto',
     'Resources': 'Recursos',
     'Overview': 'Descripción general',
-    'Stories of impact': 'Historias de impacto',
-    'Publications': 'Publicaciones',
     'Softgels': 'Cápsulas blandas',
     'Tablets': 'Comprimidos',
     'Creams & Ointments': 'Cremas y Ungüentos',
     'Injections': 'Inyecciones',
   },
   pt: {
-    'What science can do': 'O que a ciência pode fazer',
     'Home': 'Início',
     'About Us': 'Sobre nós',
     'Manufacturing': 'Fabricação',
@@ -135,8 +116,6 @@ const navTranslations: Record<string, Record<string, string>> = {
     'Contact': 'Contato',
     'Resources': 'Recursos',
     'Overview': 'Visão geral',
-    'Stories of impact': 'Histórias de impacto',
-    'Publications': 'Publicações',
     'Softgels': 'Softgels',
     'Tablets': 'Comprimidos',
     'Creams & Ointments': 'Cremes e Pomadas',
@@ -152,16 +131,6 @@ export { navTranslations }
 
 export const navigationConfig: NavigationConfig = {
   items: [
-    { 
-      label: 'What science can do', 
-      href: '/what-science-can-do',
-      hasDropdown: true,
-      items: [
-        { label: 'Overview', href: '/what-science-can-do' },
-        { label: 'Stories of impact', href: '/what-science-can-do/stories-of-impact' },
-        { label: 'Publications', href: '/what-science-can-do/publications' },
-      ]
-    },
     { label: 'Home', href: '/' },
     { label: 'About Us', href: '/about' },
     { label: 'Manufacturing', href: '/manufacturing' },
@@ -203,20 +172,3 @@ export const navigationConfig: NavigationConfig = {
   }
 }
 
-export const whatScienceMenuItems: WhatScienceMenuItem[] = [
-  { 
-    label: 'What science can do', 
-    href: '/what-science-can-do',
-    description: 'Exploring the frontiers of pharmaceutical science and innovation'
-  },
-  { 
-    label: 'Stories of impact', 
-    href: '/what-science-can-do/stories-of-impact',
-    description: 'Real-world impact of our research and partnerships'
-  },
-  { 
-    label: 'Publications', 
-    href: '/what-science-can-do/publications',
-    description: 'Scientific publications, research papers and findings'
-  },
-]

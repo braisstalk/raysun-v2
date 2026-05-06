@@ -43,10 +43,6 @@ export const ar = {
   },
   // Navigation
   nav: {
-    whatScienceCanDo: 'ما يمكن للعلم أن يفعله',
-    overview: 'نظرة عامة',
-    storiesOfImpact: 'قصص التأثير',
-    publications: 'المنشورات',
     manufacturing: 'التصنيع',
     rdInnovation: 'البحث والتطوير',
     qualityCompliance: 'الجودة والامتثال',

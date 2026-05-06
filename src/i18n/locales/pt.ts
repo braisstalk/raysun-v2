@@ -43,10 +43,6 @@ export const pt = {
   },
   // Navigation
   nav: {
-    whatScienceCanDo: 'O que a ciência pode fazer',
-    overview: 'Visão geral',
-    storiesOfImpact: 'Histórias de impacto',
-    publications: 'Publicações',
     manufacturing: 'Fabricação',
     rdInnovation: 'Inovação em P&D',
     qualityCompliance: 'Qualidade e Conformidade',

@@ -43,10 +43,6 @@ export const th = {
   },
   // Navigation
   nav: {
-    whatScienceCanDo: 'สิ่งที่วิทยาศาสตร์ทำได้',
-    overview: 'ภาพรวม',
-    storiesOfImpact: 'เรื่องราวแห่งความเปลี่ยนแปลง',
-    publications: 'สิ่งพิมพ์',
     manufacturing: 'การผลิต',
     rdInnovation: 'การวิจัยและพัฒนา',
     qualityCompliance: 'คุณภาพและการปฏิบัติตาม',

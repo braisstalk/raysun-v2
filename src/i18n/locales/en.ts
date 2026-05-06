@@ -43,10 +43,6 @@ export const en = {
   },
   // Navigation
   nav: {
-    whatScienceCanDo: 'What science can do',
-    overview: 'Overview',
-    storiesOfImpact: 'Stories of impact',
-    publications: 'Publications',
     manufacturing: 'Manufacturing',
     rdInnovation: 'R&D Innovation',
     qualityCompliance: 'Quality & Compliance',

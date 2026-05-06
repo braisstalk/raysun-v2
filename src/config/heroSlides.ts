@@ -1,7 +1,7 @@
 import type { HeroCarouselSlide } from '@/components/common/HeroCarousel'
 
 export const homeHeroSlides: HeroCarouselSlide[] = [
- { id: 'home-1', title: 'What Science Can Do — Advancing Healthcare Worldwide', subtitle: '', gradient: 'from-slate-900 via-slate-800 to-blue-900' },
+ { id: 'home-1', title: 'Advancing Healthcare Through Pharmaceutical Excellence', subtitle: '', gradient: 'from-slate-900 via-slate-800 to-blue-900' },
  { id: 'home-2', title: 'WHO GMP Certified Manufacturing Excellence', subtitle: '', gradient: 'from-[#0F172A] via-[#1E293B] to-[#1E6F5C]' },
  { id: 'home-3', title: 'Serving 6+ Countries Across Southeast Asia, Middle East & Africa', subtitle: '', gradient: 'from-indigo-900 via-blue-900 to-slate-900' },
 ]
@@ -30,8 +30,3 @@ export const aiAssistantHeroSlides: HeroCarouselSlide[] = [
  { id: 'ai-3', title: 'Available 24/7 — Multilingual Support', subtitle: '', gradient: 'from-slate-900 via-blue-800 to-[#1E293B]' },
 ]
 
-export const scienceHeroSlides: HeroCarouselSlide[] = [
- { id: 'sci-1', title: 'Transforming Lives Through Pharmaceutical Science', subtitle: '', gradient: 'from-slate-900 via-slate-800 to-blue-900' },
- { id: 'sci-2', title: '200+ Products Across 8 Therapeutic Areas', subtitle: '', gradient: 'from-blue-900 via-teal-900 to-slate-900' },
- { id: 'sci-3', title: 'From Research to Patient — End-to-End Innovation', subtitle: '', gradient: 'from-indigo-900 via-slate-800 to-blue-900' },
-]

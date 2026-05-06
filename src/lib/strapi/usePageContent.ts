@@ -57,19 +57,6 @@ export interface PageContent {
     description: string
   }
   qmsFramework?: Array<{ title: string; description: string }>
-
-  // What Science Can Do page
-  heroHeading?: string
-  heroDescription?: string
-  features?: Array<{ icon: string; title: string; description: string; href: string }>
-  impactAreas?: Array<{ title: string; count: string; description: string }>
-  ctaCards?: Array<{ title: string; description: string; href: string; linkLabel: string }>
-  partnerCta?: {
-    title: string
-    description: string
-    primaryLink: { label: string; href: string }
-    secondaryLink: { label: string; href: string }
-  }
 }
 
 export interface PageData {

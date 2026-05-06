@@ -19,9 +19,3 @@ export interface NavigationConfig {
   }
 }
 
-export interface WhatScienceMenuItem {
-  label: string
-  href: string
-  description?: string
-  icon?: string
-}

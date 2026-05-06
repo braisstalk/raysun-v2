@@ -43,10 +43,6 @@ export const vi = {
   },
   // Navigation
   nav: {
-    whatScienceCanDo: 'Những gì khoa học có thể làm',
-    overview: 'Tổng quan',
-    storiesOfImpact: 'Câu chuyện tác động',
-    publications: 'Ấn phẩm',
     manufacturing: 'Sản xuất',
     rdInnovation: 'Nghiên cứu & Phát triển',
     qualityCompliance: 'Chất lượng & Tuân thủ',

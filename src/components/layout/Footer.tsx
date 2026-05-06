@@ -26,7 +26,6 @@ const fallbackQuickLinks = [
   { label: 'Products', href: '/products' },
   { label: 'News', href: '/news' },
   { label: 'Contact Us', href: '/contact' },
-  { label: 'What science can do', href: '/what-science-can-do' },
 ]
 
 const fallbackProductLinks = [
