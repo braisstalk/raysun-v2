@@ -41,10 +41,6 @@ export const fr = {
     results: 'résultats',
   },
   nav: {
-    whatScienceCanDo: 'Ce que la science peut faire',
-    overview: 'Vue d\'ensemble',
-    storiesOfImpact: 'Histoires d\'impact',
-    publications: 'Publications',
     manufacturing: 'Production',
     rdInnovation: 'Innovation R&D',
     qualityCompliance: 'Qualité et Conformité',

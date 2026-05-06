@@ -42,10 +42,6 @@ export const zh = {
     results: '条结果',
   },
   nav: {
-    whatScienceCanDo: '科学的力量',
-    overview: '概览',
-    storiesOfImpact: '影响力故事',
-    publications: '科研成果',
     manufacturing: '生产制造',
     rdInnovation: '研发创新',
     qualityCompliance: '质量与合规',

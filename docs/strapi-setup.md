@@ -117,7 +117,7 @@ After starting Strapi:
 ### Home Page Example
 ```json
 {
-  "heroTitle": "🌿 STRAPI TEST: What Science Can Do",
+  "heroTitle": "🌿 STRAPI TEST: Manufacturing",
   "heroSubtitle": "This content is from Strapi CMS - verifying dual-source!",
   "stats": [
     {"value": "999+", "label": "Products (Strapi)"},

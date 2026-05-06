@@ -7,7 +7,7 @@ export const homeContent: HomeContent = {
   hero: {
     videoUrl: '/videos/hero-bg.mp4',
     posterImage: '/images/hero-poster.jpg',
-    title: 'What science can do',
+    title: 'Your Trusted Pharmaceutical Manufacturing Partner',
     subtitle: 'Advancing the future of healthcare through breakthrough science, sustainable innovation, and a relentless commitment to improving lives worldwide.',
     primaryCta: {
       label: 'Explore Our Products',
@@ -28,7 +28,7 @@ export const homeContent: HomeContent = {
     description: 'Our state-of-the-art facility combines advanced technology with rigorous quality standards to deliver pharmaceutical products that meet global healthcare needs.',
     cta: {
       label: 'Learn More About Our Science',
-      href: '/what-science-can-do'
+      href: '/about'
     }
   },
 
@@ -40,7 +40,7 @@ export const homeContent: HomeContent = {
   ],
 
   about: {
-    title: 'What science can do',
+    title: 'About Us',
     description: 'At Raysun Biopharma, science is more than research—it is our purpose. We combine cutting-edge technology with deep expertise to develop medicines that make a real difference in patients\' lives.',
     cta: {
       label: 'Our Story',

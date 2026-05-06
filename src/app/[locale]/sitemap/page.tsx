@@ -19,9 +19,6 @@ export async function generateMetadata({
 const siteMap = {
   main: [
     { label: 'Home', href: '/' },
-    { label: 'What science can do', href: '/what-science-can-do' },
-    { label: 'Stories of impact', href: '/what-science-can-do/stories-of-impact' },
-    { label: 'Publications', href: '/what-science-can-do/publications' },
     { label: 'About Us', href: '/about' },
     { label: 'Manufacturing', href: '/manufacturing' },
     { label: 'R&D Innovation', href: '/rd-innovation' },

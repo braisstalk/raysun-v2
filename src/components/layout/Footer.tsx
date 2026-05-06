@@ -7,6 +7,27 @@ import { STRAPI_URL } from '@/lib/strapi/client'
 import type { StrapiGlobal } from '@/lib/strapi/api'
 import AutoText from '@/components/common/AutoText'
 
+// Decommissioned URL prefixes — code-side defense in case the CMS still
+// returns links pointing at sections we have already taken offline. Pages
+// matching these prefixes also return 410 Gone via src/proxy.ts, so even
+// if the CMS sync lags, the user never sees a dead link in the footer.
+// Add new entries here when you decommission another section.
+const REMOVED_PATH_PREFIXES = [
+  '/what-science-can-do',
+] as const
+
+function isRemovedPath(href: unknown): boolean {
+  if (typeof href !== 'string') return false
+  // Strip query/hash and trim, then strip an optional 2-letter locale
+  // prefix so "/what-science-can-do" and "/en/what-science-can-do" both
+  // match. We intentionally only check the path component.
+  const path = href.split(/[?#]/, 1)[0].trim()
+  const stripped = path.replace(/^\/[a-z]{2}(?=\/|$)/i, '')
+  return REMOVED_PATH_PREFIXES.some(
+    (prefix) => stripped === prefix || stripped.startsWith(`${prefix}/`),
+  )
+}
+
 // Fallback data in case CMS is unavailable
 const fallbackData = {
   siteName: 'Raysun Biopharma',
@@ -26,7 +47,6 @@ const fallbackQuickLinks = [
   { label: 'Products', href: '/products' },
   { label: 'News', href: '/news' },
   { label: 'Contact Us', href: '/contact' },
-  { label: 'What science can do', href: '/what-science-can-do' },
 ]
 
 const fallbackProductLinks = [
@@ -57,9 +77,15 @@ export default function Footer() {
   }, [])
 
   const data = global || fallbackData as any
-  const quickLinks = (global?.footerQuickLinks && global.footerQuickLinks.length > 0) ? global.footerQuickLinks : fallbackQuickLinks
-  const productLinks = (global?.footerProductLinks && global.footerProductLinks.length > 0) ? global.footerProductLinks : fallbackProductLinks
-  const bottomLinks = (global?.footerBottomLinks && global.footerBottomLinks.length > 0) ? global.footerBottomLinks : fallbackBottomLinks
+  // Drop any CMS link that targets a decommissioned section before we use
+  // the array; only fall back to the local list when the CMS produced no
+  // usable links at all.
+  const cmsQuickLinks = global?.footerQuickLinks?.filter((link) => !isRemovedPath(link?.href)) ?? []
+  const cmsProductLinks = global?.footerProductLinks?.filter((link) => !isRemovedPath(link?.href)) ?? []
+  const cmsBottomLinks = global?.footerBottomLinks?.filter((link) => !isRemovedPath(link?.href)) ?? []
+  const quickLinks = cmsQuickLinks.length > 0 ? cmsQuickLinks : fallbackQuickLinks
+  const productLinks = cmsProductLinks.length > 0 ? cmsProductLinks : fallbackProductLinks
+  const bottomLinks = cmsBottomLinks.length > 0 ? cmsBottomLinks : fallbackBottomLinks
   const quickLinksTitle = global?.footerQuickLinksTitle || 'Quick Links'
   const productsTitle = global?.footerProductsTitle || 'Products'
   const contactTitle = global?.footerContactTitle || 'Contact'

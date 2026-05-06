@@ -41,7 +41,7 @@ Now refresh http://localhost:3000:
 
 - Look for "Source: strapi" in the top-right corner
 - Home page should show:
-  - "🌿 STRAPI TEST: What science can do" as the hero title
+  - "🌿 STRAPI TEST: Manufacturing" as the hero title
   - "🌿 This content is from Strapi CMS" as the subtitle
   - Stats showing "(Strapi)" labels
 
@@ -73,11 +73,11 @@ While in strapi mode:
 ### Visual Indicators
 
 **LOCAL mode:**
-- Home hero: "What science can do"
+- Home hero: "Manufacturing"
 - Stats: Normal values (200+, 20+, etc.)
 
 **STRAPI mode:**
-- Home hero: "🌿 STRAPI TEST: What science can do"
+- Home hero: "🌿 STRAPI TEST: Manufacturing"
 - Stats: "999+ Products (Strapi)", "99+ Countries (Strapi)", etc.
 - Products: "Amoxicillin 500mg (STRAPI TEST)"
 
@@ -95,7 +95,7 @@ Check browser console:
 The mock API provides different content to verify it's working:
 
 ### Home Page
-- Title: "🌿 STRAPI TEST: What Science Can Do"
+- Title: "🌿 STRAPI TEST: Manufacturing"
 - Subtitle: "🌿 This content is from Strapi CMS"
 - Stats with "(Strapi)" labels
 

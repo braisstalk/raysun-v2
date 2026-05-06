@@ -38,6 +38,35 @@ const REMOVED_LOCALES = new Set<string>([
   'fr-be',
 ])
 
+// Sections that used to be served but are decommissioned. Match the path with
+// or without a locale prefix and respond 410 Gone — same shape as the
+// REMOVED_LOCALES handling so crawlers drop the URL from the index quickly.
+const REMOVED_PATH_PATTERNS: RegExp[] = [
+  // /what-science-can-do, /<locale>/what-science-can-do, plus any sub-path
+  // (e.g. /en/what-science-can-do/publications, /en/what-science-can-do/stories-of-impact)
+  /^\/(?:[a-z]{2}\/)?what-science-can-do(?:\/.*)?$/i,
+]
+
+function isRemovedPath(pathname: string): boolean {
+  for (const re of REMOVED_PATH_PATTERNS) {
+    if (re.test(pathname)) return true
+  }
+  return false
+}
+
+function goneResponse(): NextResponse {
+  return new NextResponse(
+    'This page is no longer available. Please visit https://www.raysunpharma.com/en\n',
+    {
+      status: 410,
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    },
+  )
+}
+
 function getPreferredLocale(request: NextRequest): Locale {
   // 1. Check cookie first
   const cookieLocale = request.cookies.get('locale')?.value
@@ -86,6 +115,13 @@ export function proxy(request: NextRequest) {
     pathname.includes('.') // static files like .svg, .png, .css, .js
   ) {
     return NextResponse.next()
+  }
+
+  // Removed sections (e.g. /what-science-can-do, /en/what-science-can-do,
+  // /pt/what-science-can-do/publications). Check before locale-prefix logic
+  // so locale-prefixed and bare paths share one 410 path.
+  if (isRemovedPath(pathname)) {
+    return goneResponse()
   }
 
   // Check if pathname already has a valid locale prefix

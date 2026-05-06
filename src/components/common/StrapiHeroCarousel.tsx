@@ -13,7 +13,6 @@ import {
   verifyHeroSlides,
   orderHeroSlides,
   aiAssistantHeroSlides,
-  scienceHeroSlides,
 } from '@/config/heroSlides'
 
 // Map page names to fallback slides
@@ -31,7 +30,6 @@ const fallbackMap: Record<string, HeroCarouselSlide[]> = {
   'verify': verifyHeroSlides,
   'order-now': orderHeroSlides,
   'ai-assistant': aiAssistantHeroSlides,
-  'what-science-can-do': scienceHeroSlides,
 }
 
 function mapStrapiSlide(s: StrapiHeroSlide): HeroCarouselSlide {

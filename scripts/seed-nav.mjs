@@ -2,16 +2,6 @@ const STRAPI_URL = 'https://raysun-cms-production.up.railway.app'
 const STRAPI_TOKEN = '92a1de40c5ee6a313f4159d14718c7b1d37f1b3593c4fe76837e54cac075c251886af26fd769f3f07f4d8748be59d1ac7b4f8b286c7066a4c5eb8e30d09d33e532c612f2a45ae9fa8374c6fcf8f3c32ae9df2e619ba0d66f8031fad94e70b8423324a831362213b79fbdd7dc2a93dd7e4214b542151423bca3aeb8131c7ab181'
 
 const navMenuItems = [
-  {
-    label: 'What science can do',
-    href: '/what-science-can-do',
-    hasDropdown: true,
-    items: [
-      { label: 'Overview', href: '/what-science-can-do' },
-      { label: 'Stories of impact', href: '/what-science-can-do/stories-of-impact' },
-      { label: 'Publications', href: '/what-science-can-do/publications' },
-    ],
-  },
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
   { label: 'Manufacturing', href: '/manufacturing' },

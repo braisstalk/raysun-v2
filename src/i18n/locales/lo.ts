@@ -43,10 +43,6 @@ export const lo = {
   },
   // Navigation
   nav: {
-    whatScienceCanDo: 'ເ.ແ.ເ.ແ.',
-    overview: 'ເ.ແ.ເ.ແ.',
-    storiesOfImpact: 'ເ.ແ.ເ.ແ.',
-    publications: 'ເ.ແ.ເ.ແ.',
     manufacturing: 'ເ.ແ.ເ.ແ.',
     rdInnovation: 'R&D Innovation',
     qualityCompliance: 'Quality & Compliance',
