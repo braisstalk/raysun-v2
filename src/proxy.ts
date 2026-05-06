@@ -72,11 +72,17 @@ function getPreferredLocale(request: NextRequest): Locale {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Skip static files, API routes, and Next.js internals
+  // Skip static files, API routes, Next.js internals, and metadata file
+  // routes (opengraph-image, twitter-image, icon, etc.) so they're not
+  // redirected into /en/opengraph-image, which doesn't exist.
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/favicon') ||
+    pathname.startsWith('/opengraph-image') ||
+    pathname.startsWith('/twitter-image') ||
+    pathname.startsWith('/icon') ||
+    pathname.startsWith('/apple-icon') ||
     pathname.includes('.') // static files like .svg, .png, .css, .js
   ) {
     return NextResponse.next()
@@ -128,6 +134,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Match all paths except static files and API
-  matcher: ['/((?!_next|api|favicon\\.ico|images|.*\\..*).*)'],
+  // Match all paths except static files, API, and metadata file conventions.
+  matcher: [
+    '/((?!_next|api|favicon\\.ico|images|opengraph-image|twitter-image|icon|apple-icon|.*\\..*).*)',
+  ],
 }

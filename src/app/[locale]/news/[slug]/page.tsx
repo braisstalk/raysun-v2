@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { ArrowLeft, Calendar, User, FileText } from 'lucide-react'
+import { ArrowLeft, Calendar, User, Newspaper } from 'lucide-react'
 import { getNewsArticleBySlug, getRelatedNews, getAllNewsArticles } from '@/lib/content'
 import AutoText from '@/components/common/AutoText'
+import BrandPlaceholder from '@/components/common/BrandPlaceholder'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 
 interface Props {
@@ -92,12 +93,14 @@ export default async function NewsDetail({ params }: Props) {
             <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
           </div>
         ) : (
-          <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-xl h-64 md:h-96 flex items-center justify-center">
-            <div className="text-center text-slate-400">
-              <FileText className="w-16 h-16 mx-auto mb-2" />
-              <p><AutoText text="Article Image" as="span" /></p>
-            </div>
-          </div>
+          <BrandPlaceholder
+            icon={Newspaper}
+            label={article.category}
+            variant="hero"
+            tone="teal"
+            rounded="xl"
+            className="h-64 md:h-96"
+          />
         )}
       </div>
 
@@ -156,7 +159,13 @@ export default async function NewsDetail({ params }: Props) {
                       <img src={related.image} alt={related.title} className="w-full h-full object-cover" loading="lazy" />
                     </div>
                   ) : (
-                    <div className="h-32 bg-gradient-to-br from-slate-200 to-slate-300" />
+                    <BrandPlaceholder
+                      icon={Newspaper}
+                      variant="compact"
+                      tone="slate"
+                      rounded="none"
+                      className="h-32"
+                    />
                   )}
                   <div className="p-4">
                     <div className="flex items-center gap-2 text-xs text-[#1E6F5C] mb-2">

@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { ArrowLeft, Shield, FileText, ArrowRight, Check } from 'lucide-react'
+import { ArrowLeft, Shield, ArrowRight, Check, Pill } from 'lucide-react'
 import { getProductBySlug, getAllProducts } from '@/lib/content'
 import { productsPageConfig } from '@/config/products'
 import AutoText from '@/components/common/AutoText'
+import BrandPlaceholder from '@/components/common/BrandPlaceholder'
 import { buildPageMetadata } from '@/lib/seo/metadata'
 
 interface Props {
@@ -87,12 +88,14 @@ export default async function ProductDetail({ params }: Props) {
                   <img src={product.documents.sheet} alt={product.name} className="w-full h-full object-cover" />
                 </div>
               ) : (
-                <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-xl h-96 flex items-center justify-center">
-                  <div className="text-center text-slate-400">
-                    <FileText className="w-16 h-16 mx-auto mb-2" />
-                    <p><AutoText text="Product Image" as="span" /></p>
-                  </div>
-                </div>
+                <BrandPlaceholder
+                  icon={Pill}
+                  label={product.name}
+                  variant="hero"
+                  tone="teal"
+                  rounded="xl"
+                  className="h-96"
+                />
               )}
             </div>
 

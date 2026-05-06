@@ -11,6 +11,8 @@ import StrapiHeroCarousel from '@/components/common/StrapiHeroCarousel'
 import ProductsSearchBar from '@/components/products/ProductsSearchBar'
 import { useRfqCart } from '@/contexts/RfqCartContext'
 import AutoText from '@/components/common/AutoText'
+import BrandPlaceholder from '@/components/common/BrandPlaceholder'
+import { Pill } from 'lucide-react'
 
 function generateSlug(name: string): string {
   return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
@@ -290,27 +292,31 @@ export default function Products() {
               paged.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {paged.map((product) => {
-                    const hue = (parseInt(product.id.replace(/\D/g, ''), 10) * 37) % 360
+                    const hasImage = product.images && product.images.length > 0
                     return (
                       <Link
                         key={product.id}
                         href={`/products/${product.slug}`}
-                        className="group bg-white rounded-xl border border-slate-200 p-4 hover:shadow-lg hover:border-[#1E6F5C]/30 transition-all"
+                        className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:border-[#1E6F5C]/30 transition-all"
                       >
-                        <div
-                          className="h-24 rounded-lg mb-4 flex items-center justify-center"
-                          style={{ background: `hsl(${hue}, 60%, 95%)` }}
-                        >
-                          {product.images && product.images.length > 0 ? (
-                            <img 
-                              src={product.images[0].thumbnail || product.images[0].url} 
+                        {hasImage ? (
+                          <div className="h-28 bg-slate-50 flex items-center justify-center">
+                            <img
+                              src={product.images[0].thumbnail || product.images[0].url}
                               alt={product.images[0].alt}
                               className="h-20 w-20 object-contain"
                             />
-                          ) : (
-                            <span className="text-2xl">💊</span>
-                          )}
-                        </div>
+                          </div>
+                        ) : (
+                          <BrandPlaceholder
+                            icon={Pill}
+                            variant="card"
+                            tone="mixed"
+                            rounded="none"
+                            className="h-28"
+                          />
+                        )}
+                        <div className="p-4">
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <h3 className="font-semibold text-slate-900 group-hover:text-[#1E6F5C] line-clamp-2 text-sm">
                             <AutoText text={product.name} />
@@ -331,6 +337,7 @@ export default function Products() {
                           >
                             <AutoText text="+ RFQ" as="span" />
                           </button>
+                        </div>
                         </div>
                       </Link>
                     )

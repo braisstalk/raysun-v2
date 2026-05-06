@@ -5,7 +5,9 @@ import type { Locale } from '@/i18n/config'
 export const BASE_URL = 'https://www.raysunpharma.com'
 
 export const SITE_NAME = 'Raysun Biopharma'
-export const DEFAULT_OG_IMAGE = '/logo.png'
+// Stable URL that resolves to app/opengraph-image.tsx — kept relative so
+// Next.js prepends `metadataBase` and bots see an absolute URL.
+export const DEFAULT_OG_IMAGE = '/opengraph-image'
 export const DEFAULT_OG_IMAGE_WIDTH = 1200
 export const DEFAULT_OG_IMAGE_HEIGHT = 630
 
@@ -70,6 +72,7 @@ export function buildPageMetadata({
   const canonical = buildCanonical(validLocale, path)
   const alternates = buildAlternates(path)
   const ogLocale = openGraphLocales[validLocale]
+
   const og = ogImage ?? DEFAULT_OG_IMAGE
 
   const meta: Metadata = {
@@ -84,7 +87,20 @@ export function buildPageMetadata({
       locale: ogLocale,
       title: title ?? `${SITE_NAME} - GMP Certified Pharmaceutical Manufacturer`,
       ...(description ? { description } : {}),
-      images: [{ url: og, width: DEFAULT_OG_IMAGE_WIDTH, height: DEFAULT_OG_IMAGE_HEIGHT, alt: SITE_NAME }],
+      images: [
+        {
+          url: og,
+          width: DEFAULT_OG_IMAGE_WIDTH,
+          height: DEFAULT_OG_IMAGE_HEIGHT,
+          alt: SITE_NAME,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title ?? SITE_NAME,
+      ...(description ? { description } : {}),
+      images: [og],
     },
   }
 

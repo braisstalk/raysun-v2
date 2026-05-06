@@ -5,6 +5,7 @@ import { MapPin, Mail, Phone, Clock, Send, CheckCircle, AlertCircle, Briefcase, 
 import { useTranslation } from '@/i18n/useTranslation'
 import StrapiHeroCarousel from '@/components/common/StrapiHeroCarousel'
 import AutoText from '@/components/common/AutoText'
+import BrandPlaceholder from '@/components/common/BrandPlaceholder'
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -365,12 +366,14 @@ export default function Contact() {
       {/* Map Section */}
       <section className="py-12 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl h-64 flex items-center justify-center">
-            <div className="text-center text-slate-400">
-              <MapPin className="w-12 h-12 mx-auto mb-2" />
-              <p><AutoText>{t.contact.mapLocation}</AutoText></p>
-            </div>
-          </div>
+          <BrandPlaceholder
+            icon={MapPin}
+            label={t.contact.mapLocation}
+            variant="hero"
+            tone="slate"
+            rounded="2xl"
+            className="h-64"
+          />
         </div>
       </section>
     </>
